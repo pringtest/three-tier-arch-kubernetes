@@ -1,0 +1,153 @@
+# create amazon-cloudwatch namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: syamim
+  labels:
+    name: syamim
+    
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syamim-api-deployment
+  labels:
+    app: syamim-app
+  namespace: syamim
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: syamim-app
+  template:
+    metadata:
+      labels:
+        app: syamim-app
+    spec:
+      containers:
+        - name: syamim-api
+          image: 802816337927.dkr.ecr.us-west-1.amazonaws.com/dev-mae-ecr:node-server-1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syamim-web-deployment
+  labels:
+    app: syamim-app
+  namespace: syamim
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: syamim-app
+  template:
+    metadata:
+      labels:
+        app: syamim-app
+    spec:
+      containers:
+        - name: syamim-web
+          image: 802816337927.dkr.ecr.us-west-1.amazonaws.com/dev-mae-ecr:gatsby-web-1.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4000
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   annotations:
+#     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+#     service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+#     service.beta.kubernetes.io/aws-load-balancer-type: nlb
+#   name: syamim-service
+#   labels:
+#     app: syamim-app
+#   namespace: syamim
+# spec:
+#   selector:
+#     app: syamim-app
+#   type: LoadBalancer
+#   externalTrafficPolicy: Local
+#   ports:
+#     - port: 80
+#       targetPort: 3000
+#       protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: syamim-api-service
+  labels:
+    app: syamim-app
+  namespace: syamim
+spec:
+  ports:
+    - port: 3000
+      protocol: TCP
+  selector:
+    app: syamim-app
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: syamim-web-service
+  labels:
+    app: syamim-app
+  namespace: syamim
+spec:
+  ports:
+    - port: 4000
+      protocol: TCP
+  selector:
+    app: syamim-app
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: syamim-app-ingress
+  namespace: syamim
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    # nginx.ingress.kubernetes.io/enable-opentracing: "true"
+    # # Health Check Settings
+    # alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    # alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    # alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    # alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    # alb.ingress.kubernetes.io/success-codes: '200'
+    # alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    # alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+spec:
+  # tls:
+  #   - hosts:
+  #       - anthonycornell.com
+  #     secretName: tls-secret
+  rules:
+    - http:
+        paths:
+          - path: /syamim-api/dev(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: syamim-api-service
+                port:
+                  number: 3000
+          - path: /syamim-web/dev(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: syamim-web-service
+                port:
+                  number: 4000
+      # host: anthonycornell.com

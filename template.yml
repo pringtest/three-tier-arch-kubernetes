@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: dev-lab-cloud
+
+Parameters:
+  Project:
+    Type: String
+  NodeEnv:
+    Type: String
+  
+Resources:
+  EKSCustomVPC:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: './stacks/vpc.yml'
+      Parameters:
+        Project: !Ref Project
+        NodeEnv: !Ref NodeEnv
+
+  
