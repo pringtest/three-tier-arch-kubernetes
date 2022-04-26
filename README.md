@@ -1,14 +1,22 @@
 # three-tier-arch-kubernetes
 
 ## Introduction 
-- This repo contain basic example of **AWS Elastic Kubernetes Service (EKS)** deploy by using **SAM**. 
-- Feel free to explore the code at your own risk. :stuck_out_tongue_winking_eye:
+- This repo show a demo how to create EKS using AWS Console.
 
-## Stacks
-- There are 3 stacks used in this template `VPC`, `Roles`, and `EKS Cluster`.
-- ![alt text](./images/stack.png)
+## Custom VPC
+- To deploy EKS we need custom VPC. Run this command to deploy custom VPC with public subnet only.
+```sh
+# for first time deployment
+yarn deploy --guided
 
-## Architecture
+# and beyond
+yarn deploy
+```
+
+## Create EKS
+- Please follow documentation here to create EKS using AWS Console
+
+## Architecture for This Demo
 - Feel free to add or remove which VPC components to suit current use case.
 - ![alt text](./images/eksArchitecture.png)
 

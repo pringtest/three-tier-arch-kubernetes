@@ -25,17 +25,6 @@ Metadata:
           - VpcBlock
           - PublicSubnet01Block
           - PublicSubnet02Block
-          - PrivateSubnet01Block
-          - PrivateSubnet02Block
-
-Mappings:
-  ServiceNamePrefixMap:
-    aws:
-      Name: com.amazonaws
-    aws-cn:
-      Name: cn.com.amazonaws
-    aws-us-gov:
-      Name: com.amazonaws
 
 Resources:
   # create VPC, this will also create route table, network ACL, Security Group
