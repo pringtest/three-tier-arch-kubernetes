@@ -16,9 +16,30 @@ yarn deploy
 ## Create EKS
 - Please follow documentation here to create EKS using AWS Console
 
-## Architecture for This Demo
+
+## **2. Access to the cluster**
+- For `Primary` Region: 
+  - Change **<AWS_REGION>** to `your deployment region`
+  - Change **<CLUSTER_NAME>** to `dev-lab-eks-cluster` for development
+  
+```sh
+aws eks --region <AWS_REGION> update-kubeconfig --name <CLUSTER_NAME>
+```
+- Check access.
+- If you get the list of nodes then you have succesfully access to the cluster.
+```sh
+kubectl get nodes
+```
+
+- We can check that we have these new contexts with the following command.
+- The “*” indicates which is the context we are in.
+```sh
+kubectl config get-contexts
+```
+
+<!-- ## Architecture for This Demo
 - Feel free to add or remove which VPC components to suit current use case.
-- ![alt text](./images/eksArchitecture.png)
+- ![alt text](./images/eksArchitecture.png) -->
 
 ## Installation
 - Requires [NPM][node.js] to install yarn.
