@@ -14,10 +14,10 @@ yarn deploy
 ```
 
 ## Create EKS
-- Please follow documentation here to create EKS using AWS Console
+- Please follow documentation to create EKS using AWS Console
 
 
-## **2. Access to the cluster**
+## Access to the cluster
 - For `Primary` Region: 
   - Change **<AWS_REGION>** to `your deployment region`
   - Change **<CLUSTER_NAME>** to `dev-lab-eks-cluster` for development
@@ -48,22 +48,12 @@ kubectl config get-contexts
 - Requires [SAM CLI][SAM CLI] to deploy stacks into AWS Cloud.
 - Requires [KUBECTL][Kubectl] to manage kubernetes.
 
-For development deployment you can run script that execute sam cli
-```sh
-yarn maedev
-```
-For production deployment you can run script that execute sam cli
-```sh
-yarn maeprod
-```
-
-
 
 ## License
 
 MIT
 
-**Free Software, Syukran Alhamdulillah Thank to Allah!**
+**Free Software!**
 
    [node.js]: <http://nodejs.org>
    [SAM CLI]: <https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html>
