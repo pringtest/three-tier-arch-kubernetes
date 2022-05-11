@@ -25,7 +25,7 @@ yarn deploy
 ```sh
 aws eks --region <AWS_REGION> update-kubeconfig --name <CLUSTER_NAME>
 ```
-- Check access.
+- Check access to the cluster by running below command.
 - If you get the list of nodes then you have succesfully access to the cluster.
 ```sh
 kubectl get nodes

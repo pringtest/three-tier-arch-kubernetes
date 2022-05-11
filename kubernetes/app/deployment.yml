@@ -2,31 +2,31 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: syamim
+  name: lab
   labels:
-    name: syamim
+    name: lab
     
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: syamim-api-deployment
+  name: lab-api-deployment
   labels:
-    app: syamim-app
-  namespace: syamim
+    app: lab-app
+  namespace: lab
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: syamim-app
+      app: lab-app
   template:
     metadata:
       labels:
-        app: syamim-app
+        app: lab-app
     spec:
       containers:
-        - name: syamim-api
-          image: 802816337927.dkr.ecr.us-west-1.amazonaws.com/dev-mae-ecr:node-server-1.0
+        - name: lab-api
+          image: 396460956865.dkr.ecr.ap-southeast-2.amazonaws.com/demo-api-server:v1.0
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
@@ -35,26 +35,26 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: syamim-web-deployment
+  name: lab-web-deployment
   labels:
-    app: syamim-app
-  namespace: syamim
+    app: lab-app
+  namespace: lab
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: syamim-app
+      app: lab-app
   template:
     metadata:
       labels:
-        app: syamim-app
+        app: lab-app
     spec:
       containers:
-        - name: syamim-web
-          image: 802816337927.dkr.ecr.us-west-1.amazonaws.com/dev-mae-ecr:gatsby-web-1.1
+        - name: lab-web
+          image: 396460956865.dkr.ecr.ap-southeast-2.amazonaws.com/demo-web-server:v2.0@sha256:11a6dcb7229e29a2d6bd01c4d9058ecdd74e4344c34f301ae59952f91bac5f12
           imagePullPolicy: Always
           ports:
-            - containerPort: 4000
+            - containerPort: 80
 
 # ---
 # apiVersion: v1
@@ -64,13 +64,13 @@ spec:
 #     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
 #     service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
 #     service.beta.kubernetes.io/aws-load-balancer-type: nlb
-#   name: syamim-service
+#   name: lab-service
 #   labels:
-#     app: syamim-app
-#   namespace: syamim
+#     app: lab-app
+#   namespace: lab
 # spec:
 #   selector:
-#     app: syamim-app
+#     app: lab-app
 #   type: LoadBalancer
 #   externalTrafficPolicy: Local
 #   ports:
@@ -82,38 +82,38 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: syamim-api-service
+  name: lab-api-service
   labels:
-    app: syamim-app
-  namespace: syamim
+    app: lab-app
+  namespace: lab
 spec:
   ports:
     - port: 3000
       protocol: TCP
   selector:
-    app: syamim-app
+    app: lab-app
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: syamim-web-service
+  name: lab-web-service
   labels:
-    app: syamim-app
-  namespace: syamim
+    app: lab-app
+  namespace: lab
 spec:
   ports:
-    - port: 4000
+    - port: 80
       protocol: TCP
   selector:
-    app: syamim-app
+    app: lab-app
 
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: syamim-app-ingress
-  namespace: syamim
+  name: lab-app-ingress
+  namespace: lab
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -136,18 +136,18 @@ spec:
   rules:
     - http:
         paths:
-          - path: /syamim-api/dev(/|$)(.*)
+          - path: /lab-api/dev(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: syamim-api-service
+                name: lab-api-service
                 port:
                   number: 3000
-          - path: /syamim-web/dev(/|$)(.*)
+          - path: /lab-web/dev(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: syamim-web-service
+                name: lab-web-service
                 port:
-                  number: 4000
+                  number: 80
       # host: anthonycornell.com
