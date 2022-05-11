@@ -37,9 +37,12 @@ kubectl get nodes
 kubectl config get-contexts
 ```
 
-<!-- ## Architecture for This Demo
-- Feel free to add or remove which VPC components to suit current use case.
-- ![alt text](./images/eksArchitecture.png) -->
+## Architecture for This Demo
+- VPC Architecture
+- ![alt text](./images/VPC_arch_lab.png)
+
+- Kubernetes Architecture
+- ![alt text](./images/EKS_arch_lab.png)
 
 ## Installation
 - Requires [NPM][node.js] to install yarn.
